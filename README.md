@@ -6,3 +6,5 @@ dezoom in termnal to see (and idk why the pictures displays themselves weirdly r
 
 cool results with: 
   full dezoom ->  ./asxpm "file.xpm" | bat
+
+![image](https://github.com/user-attachments/assets/7fb486b9-ec3c-450c-8550-15a6cf917d82)
