@@ -143,14 +143,14 @@ int	*infosize(char *file)
 	close(fd);
 	return (sizeinfo);
 }
-int		getpicbuff(char ***tab, int fd)
+int		getpicbuff(char ***tab, int *fd)
 {
 	int	i;
 
 	i = 0;
 	while (1)
 	{
-		(*tab)[i] = get_next_line(fd);
+		(*tab)[i] = get_next_line(*fd);
 		if ((*tab)[i] == NULL)
 			return (-1);
 		i++;
@@ -172,13 +172,13 @@ char	**getimg(int *size, int fd)
 	{
 		str = get_next_line(fd);
 		if (!str)
-			break;
-		if (ft_strncmp(str, "/* pixels */", 11) != 0)
+			return (NULL);
+		if (ft_strncmp(str, "/* pixels */", 11) == 0)
 			break;
 		free(str);
 	}
 	free(str);
-	getpicbuff(&tab, fd);
+	getpicbuff(&tab, &fd);
 	close(fd);
 	return (tab); 
 }
@@ -189,27 +189,46 @@ int		render(char **colors, char *file, int *size)
 	int		j;
 	int		fd;
 	char	**tab;
+	int		newi;
+	int		newj;
 
-	i = 0;
-	j = 0;
+	tab = NULL;
+	newi = (i = 0);
+	newj = (j = 0);
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 		return (-1);
 	tab = getimg(size, fd);
+	if (size[0] > 1400)
+	{
+		newi = 6*2;
+		newj = 16*3;
+	}
+	else if (size[0] > 700)
+	{
+		newi = 6;
+		newj = 16;
+	}
+	else
+	{
+		newi = 1;
+		newj = 2;
+	}
 	i = 0;
-	while (tab[i] != NULL)
+	while (tab[i] != NULL && tab[i])
 	{
 		j = 1;
-		while (j < size[0] && tab[i][j] && tab[i][j+1])
+		while (j < size[0]*2 && tab[i][j] && tab[i][j+newi])
 		{
-			if (j+1 < size[0] && tab[i][j] && tab[i][j+1])
+			if (j+1 < size[0]*2 && tab[i][j] && tab[i][j+1])
 				colortohex(colors, tab[i][j], tab[i][j+1], 1);
-			j = j + 2;
+			j = j + newj;
 		}
 		printf("\n");
-		free(tab[i]);
-		i = i + 1;
+		i = i + newi;
 	}
+	while (i)
+		free(tab[--i]);
 	free(tab);
 	return (1);
 }
@@ -224,7 +243,6 @@ int	mainrenderer(char *file)
 	colors = get_colors_xpm(file, size);
 	if (colors == NULL)
 		return (-1);
-	// colortohex(colors);
 	render(colors, file, size);
 	free(size);
 	char **temp = colors;

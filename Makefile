@@ -6,7 +6,10 @@ LIB = libft.a
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -g3 -O3
+CFLAGS = -Wall -Wextra -Werror -g3 -Ofast
+ifdef GPROF
+	CFLAGS += -pg
+endif
 
 make:
 	$(CC) $(CFLAGS) $(SRCS) $(LIB) -o $(NAME)
