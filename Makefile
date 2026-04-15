@@ -1,19 +1,27 @@
-NAME = ascxpm
+NAME = Asxpm
+CC = c++
+CFLAGS = -std=c++98 -Wall -Wextra -Werror -g3
+RM = rm -f
+SRC_DIR = srcs
+SRC_NAMES = main.cpp picture.cpp tty.cpp
+SRCS = $(SRC_NAMES:%=$(SRC_DIR)/%)
+# SRCS = $(SRC:.cpp)
+OBJS = $(SRCS:.cpp=.o)
 
-SRCS = main.c
+all: $(NAME)
 
-LIB = libft.a
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-CC = gcc
-
-CFLAGS = -Wall -Wextra -Werror -g3 -Ofast
-ifdef GPROF
-	CFLAGS += -pg
-endif
-
-make:
-	$(CC) $(CFLAGS) $(SRCS) $(LIB) -o $(NAME)
+%.o: %.cpp
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm $(NAME)
+	@$(RM) -r $(OBJS)
+	@echo "$(MAGENTA)🧹 Cleaning objects...$(RESET)"
 
+fclean: clean
+	@$(RM) $(NAME)
+	@echo "$(GREEN)🗑️ Cleaning objects and executable...$(RESET)"
+
+re: fclean clean all

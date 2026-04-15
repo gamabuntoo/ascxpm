@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gule-bat <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gule-bat <gule-bat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 22:12:38 by gule-bat          #+#    #+#             */
-/*   Updated: 2024/11/28 16:52:40 by gule-bat         ###   ########.fr       */
+/*   Updated: 2026/04/14 02:04:32 by gule-bat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,14 @@ void	ft_putnbr_fd(int n, int fd);
 
 // bonus
 
-void	ft_lstadd_back(t_list **lst, t_list *new);
-void	ft_lstadd_front(t_list **lst, t_list *new);
-void	ft_lstadd_front(t_list **lst, t_list *new);
-void	ft_lstdelone(t_list *lst, void (*del)(void *));
-void	ft_striter(t_list *lst, void (*f)(void *));
-t_list	*ft_lstlast(t_list *lst);
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
-t_list	*ft_lstnew(void *content);
-int		ft_lstsize(t_list *lst);
+// void	ft_lstadd_back(t_list **lst, t_list *new);
+// void	ft_lstadd_front(t_list **lst, t_list *new);
+// void	ft_lstadd_front(t_list **lst, t_list *new);
+// void	ft_lstdelone(t_list *lst, void (*del)(void *));
+// void	ft_striter(t_list *lst, void (*f)(void *));
+// t_list	*ft_lstlast(t_list *lst);
+// t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+// t_list	*ft_lstnew(void *content);
+// int		ft_lstsize(t_list *lst);
 
 #endif
