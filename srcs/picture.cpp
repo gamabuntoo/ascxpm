@@ -6,7 +6,7 @@
 /*   By: gule-bat <gule-bat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 20:50:08 by gule-bat          #+#    #+#             */
-/*   Updated: 2026/04/17 16:25:49 by gule-bat         ###   ########.fr       */
+/*   Updated: 2026/04/17 17:37:50 by gule-bat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,19 +151,15 @@ void	Picture::get_ascii_buffer()
 	int i;
 	int j;
 	int it = infos[3];
-	// int grade = 1;
 	double scale;
 	vec sd;
 	vec fsize;
 	std::string text;
 
 	i = 0;
-	fsize.x = tty_i.tty_s.x;
-	fsize.y = tty_i.tty_s.y;
-	// text.reserve(1 + bf_pic[0].size() * infos[1]);
-	scale = std::min((double)fsize.x / xy_pic.x, (double)fsize.y * 0.5 / xy_pic.y); // scaling pcq y est petit sur le term
-	fsize.x = xy_pic.x * scale;
-	fsize.y = xy_pic.y * scale;
+	scale = std::min((double)tty_i.tty_s.x / xy_pic.x, (double)tty_i.tty_s.y * 0.5 / xy_pic.y); // scaling pcq y est petit sur le term
+	fsize.x = (xy_pic.x * scale) / SCALE_FAC;
+	fsize.y = (xy_pic.y * scale) / SCALE_FAC;
 	fsize.x /= SCALE_FAC; // downscaling pcq trop grand sinon en general
 	fsize.y /= SCALE_FAC;
 	while (i < fsize.y) // y += 1; x += it
@@ -181,11 +177,12 @@ void	Picture::get_ascii_buffer()
 			text += print_pixel_ascii(sd.y, offst);
 			j++;
 		}
-		text += "\n";
+		text += '\n';
 		i++;
 	}
-	last = text;
-	write(1, text.c_str(), text.size());
+	// last = text;
+	if (!write(1, text.c_str(), text.size()))
+		return (perror("error write system call to display pic buffer"));
 }
 
 Picture::Picture(std::string name, char **env): tty_i(tty_infos(env))
