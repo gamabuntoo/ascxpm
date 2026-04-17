@@ -6,7 +6,7 @@
 /*   By: gule-bat <gule-bat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 20:50:08 by gule-bat          #+#    #+#             */
-/*   Updated: 2026/04/15 06:07:20 by gule-bat         ###   ########.fr       */
+/*   Updated: 2026/04/17 16:25:49 by gule-bat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ std::string	Picture::print_pixel_ascii(int y, int x)
 			r = (r / 64) * 64;
 			g = (g / 64) * 64;
 			b = (b / 64) * 64;
-			sr << "\033[48;2;" << r << ";" << g << ";" << b << "m" << "     \033[0m";
+			sr << "\033[48;2;" << r << ";" << g << ";" << b << "m" << "  \033[0m";
 			res += sr.str();
 			return res;
 		}
@@ -151,7 +151,7 @@ void	Picture::get_ascii_buffer()
 	int i;
 	int j;
 	int it = infos[3];
-	int grade = 3;
+	// int grade = 1;
 	double scale;
 	vec sd;
 	vec fsize;
@@ -164,8 +164,8 @@ void	Picture::get_ascii_buffer()
 	scale = std::min((double)fsize.x / xy_pic.x, (double)fsize.y * 0.5 / xy_pic.y); // scaling pcq y est petit sur le term
 	fsize.x = xy_pic.x * scale;
 	fsize.y = xy_pic.y * scale;
-	fsize.x /= grade; // downscaling pcq trop grand sinon en general
-	fsize.y /= grade;
+	fsize.x /= SCALE_FAC; // downscaling pcq trop grand sinon en general
+	fsize.y /= SCALE_FAC;
 	while (i < fsize.y) // y += 1; x += it
 	{
 		j = 0;

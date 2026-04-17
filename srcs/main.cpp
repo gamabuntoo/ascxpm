@@ -6,7 +6,7 @@
 /*   By: gule-bat <gule-bat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 20:46:38 by gule-bat          #+#    #+#             */
-/*   Updated: 2026/04/14 02:31:21 by gule-bat         ###   ########.fr       */
+/*   Updated: 2026/04/17 16:40:00 by gule-bat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <fcntl.h>
-// #include "../libft/libft.h"
-// #include "../libft/get_next_line.h"
 #include "../includes/asxpm.hpp"
+
 
 int main(int argc, char **argv, char **env)
 {

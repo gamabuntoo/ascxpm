@@ -5,7 +5,6 @@ RM = rm -f
 SRC_DIR = srcs
 SRC_NAMES = main.cpp picture.cpp tty.cpp
 SRCS = $(SRC_NAMES:%=$(SRC_DIR)/%)
-# SRCS = $(SRC:.cpp)
 OBJS = $(SRCS:.cpp=.o)
 
 all: $(NAME)

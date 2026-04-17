@@ -6,7 +6,7 @@
 /*   By: gule-bat <gule-bat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 20:47:16 by gule-bat          #+#    #+#             */
-/*   Updated: 2026/04/15 05:41:49 by gule-bat         ###   ########.fr       */
+/*   Updated: 2026/04/17 16:41:01 by gule-bat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <fcntl.h>
-#include "../libft/libft.h"
-#include "../libft/get_next_line.h"
+
+#define SCALE_FAC 1
 
 struct	vec
 {
