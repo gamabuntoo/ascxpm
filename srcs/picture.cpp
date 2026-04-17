@@ -6,7 +6,7 @@
 /*   By: gule-bat <gule-bat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 20:50:08 by gule-bat          #+#    #+#             */
-/*   Updated: 2026/04/17 17:37:50 by gule-bat         ###   ########.fr       */
+/*   Updated: 2026/04/17 18:47:28 by gule-bat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void Picture::get_info_image()
 	col = new std::string[infos[2]+1];
 	if (!col)
 		return (perror("error alloc colors"));
-	for (int x = 0; x <= infos[2]; x++)
+	for (int x = 0; x <= infos[2]; x++) // get colors
 	{
 		std::string tmp = &bf_text[i+x][1];
 		tmp[tmp.size()-1] = '\0';
@@ -115,31 +115,32 @@ std::string	Picture::print_pixel_ascii(int y, int x)
 {
 	std::string s;
 	std::string find;
-	int col;
-	int r;
-	int g;
-	int b;
+	// int col;
+	// int r;
+	// int g;
+	// int b;
 	std::string res;
 
-	col = 0;
+	// col = 0;
 	s = bf_pic[y].substr(x, infos[3]);
 	for (int i = 0; i <= infos[2]; i++)
 	{
 		if (colors[i].substr(0, infos[3]) == s)
 		{
-			std::stringstream sr;
-			int n = 0;
-			while (colors[i][n] != '#')
-				n++;
-			col = (int)strtol(&colors[i][n+1], NULL, 16); // peut etre suspect sur s[x]
-			r = (col >> 16) & 0xFF;
-			g = (col >> 8) & 0xFF;
-			b = col & 0xFF;
-			r = (r / 64) * 64;
-			g = (g / 64) * 64;
-			b = (b / 64) * 64;
-			sr << "\033[48;2;" << r << ";" << g << ";" << b << "m" << "  \033[0m";
-			res += sr.str();
+			// std::stringstream sr;
+			// int n = 0;
+			// while (colors[i][n] != '#')
+			// 	n++;
+			// col = (int)strtol(&colors[i][n+1], NULL, 16); // peut etre suspect sur s[x]
+			// r = (col >> 16) & 0xFF;
+			// g = (col >> 8) & 0xFF;
+			// b = col & 0xFF;
+			// r = (r / 64) * 64;
+			// g = (g / 64) * 64;
+			// b = (b / 64) * 64;
+			// sr << "\033[48;2;" << r << ";" << g << ";" << b << "m" << "  \033[0m";
+			// res += sr.str();
+			res += colors_ansii[i];
 			return res;
 		}
 	}
@@ -180,9 +181,38 @@ void	Picture::get_ascii_buffer()
 		text += '\n';
 		i++;
 	}
-	// last = text;
-	if (!write(1, text.c_str(), text.size()))
-		return (perror("error write system call to display pic buffer"));
+	last = text; // could be usable later
+	// if (!write(1, text.c_str(), text.size()))
+		// return (perror("error write system call to display pic buffer"));
+	std::cout << text;
+}
+
+
+void	Picture::get_ansii_colors()
+{
+	int size = infos[2];
+	int x = 0;
+	std::stringstream sr;
+	std::string *colo = new std::string[size+1];
+
+	if (!colo)
+		return ;
+	while (x <= size)
+	{
+		int n = 0;
+		while (colors[x][n] && colors[x][n] != '#')
+			n++;
+		int col = (int)strtol(&colors[x][n+1], NULL, 16); // peut etre suspect sur s[x]
+		int r = (((col >> 16) & 0xFF) / 64) * 64;
+		int g = (((col >> 8) & 0xFF)/ 64 ) * 64;
+		int b = ((col & 0xFF) / 64) * 64;
+		sr << "\033[48;2;" << r << ";" << g << ";" << b << "m" << "  \033[0m";
+		colo[x] = sr.str();
+		sr.str("");
+		// sr.clear();
+		x++;
+	}
+	colors_ansii = colo;
 }
 
 Picture::Picture(std::string name, char **env): tty_i(tty_infos(env))
@@ -190,6 +220,7 @@ Picture::Picture(std::string name, char **env): tty_i(tty_infos(env))
 	infos[0]= 0;infos[1]= 0;infos[2]= 0;infos[3]= 0;
 	get_xpm_buffer(name);/*		std::cout << "xpm file copied;\n";*/
 	get_info_image();/*			std::cout << "xpm info: " << "size - x " << xy_pic.x << " - y " << xy_pic.y << " colors nb: " << infos[2] << " char per px: " << infos[3] <<";\n";*/
+	get_ansii_colors();
 	get_ascii_buffer();
 }
 
@@ -199,6 +230,8 @@ Picture::~Picture()
 		delete [] bf_text;
 	if (colors)
 		delete [] colors;
+	if (colors_ansii)
+		delete [] colors_ansii;
 	if (bf_pic)
 		delete [] bf_pic;
 }

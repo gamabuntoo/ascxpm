@@ -6,7 +6,7 @@
 /*   By: gule-bat <gule-bat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 20:47:16 by gule-bat          #+#    #+#             */
-/*   Updated: 2026/04/17 16:41:01 by gule-bat         ###   ########.fr       */
+/*   Updated: 2026/04/17 18:06:53 by gule-bat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ class	Picture
 		int infos[4]; // x, y, nb of colors, char/color
 		std::string *bf_text;
 		std::string *colors;
+		std::string *colors_ansii;
 		std::string *bf_pic;
 		std::string last; // buffer ready to be writter by write (max speed efficiency atm	)
 	public:
@@ -62,6 +63,7 @@ class	Picture
 		void	get_info_image();
 		void	get_pic_buffer();
 		void	get_ascii_buffer();
+		void	get_ansii_colors();
 		std::string	print_pixel_ascii(int y, int x);
 };
 
