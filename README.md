@@ -32,5 +32,11 @@ terminal directly instead of scaling the picture but idk atm.
 	Some bugs might still be present I didnt tested every xpm possibilty but I've corrected some majors crashes rn.
 	If u find one contact me pls.
 
+- Small tty size :
+![image](https://github.com/user-attachments/assets/e5745e02-6cc6-4bb8-b33e-128cd07fa341)
+- Big tty size :
+![image](https://github.com/user-attachments/assets/ab793805-0ac4-4ba8-a89c-82b7ac536a61)
+
+
 
 old c version :![image](https://github.com/user-attachments/assets/7fb486b9-ec3c-450c-8550-15a6cf917d82)
