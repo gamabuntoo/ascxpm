@@ -6,12 +6,15 @@
 /*   By: gule-bat <gule-bat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 20:47:16 by gule-bat          #+#    #+#             */
-/*   Updated: 2026/04/17 18:06:53 by gule-bat         ###   ########.fr       */
+/*   Updated: 2026/04/22 13:40:48 by gule-bat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ASXPM_HPP
 # define ASXCPM_HPP
+
+// #pragma GCC optimize("O2") 
+// #pragma GCC target("avx,avx2,fma")
 
 #include <iostream>
 #include <string>
@@ -24,8 +27,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <fcntl.h>
+#include <dirent.h>
+#include <sys/stat.h>
+#include <termios.h>
+#include <pthread.h>
 
 #define SCALE_FAC 1
+
+typedef pthread_mutex_t mutex;
 
 struct	vec
 {
@@ -55,18 +64,49 @@ class	Picture
 		std::string *colors_ansii;
 		std::string *bf_pic;
 		std::string last; // buffer ready to be writter by write (max speed efficiency atm	)
-	public:
-		Picture(std::string name, char **env);
-		~Picture();
-		void get_xpm_buffer(std::string name);
+		void 	get_xpm_buffer(std::string name);
 		void	get_file(std::string name);
 		void	get_info_image();
 		void	get_pic_buffer();
 		void	get_ascii_buffer();
 		void	get_ansii_colors();
+	public:
+		Picture(std::string name, char **env);
+		~Picture();
+		void	print_picture();
 		std::string	print_pixel_ascii(int y, int x);
 };
 
+class	Video
+{
+	private:
+		int		_b_pos;
+		int		_frames;
+		std::string	_folder;
+		std::string *_files;
+	public:
+		Video(std::string folder, char **env);
+		~Video();
+		std::string get_dir(std::string folder);
+		int			print_video(char **env, int i, int l);
+		int			print_video_by_frames(char **env, int i);
+};
 
+class	Inputs
+{
+	private:
+		bool ok;
+		std::string line;
+		std::string _str;
+		char **_env;
+		// mutex o;
+		// pthread_t id;
+	public:
+		Inputs(std::string str, char **env);
+		~Inputs();
+		void	start_video_loop();
+		void	start_image();
+		void	start_video();
+};
 
 #endif

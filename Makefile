@@ -1,6 +1,6 @@
 NAME = Asxpm
 CC = c++
-CFLAGS = -std=c++98 -Wall -Wextra -Werror -O3
+CFLAGS = -std=c++98 -Wall -Wextra -Werror -O2 -g3
 RM = rm -f
 SRC_DIR = srcs
 SRC_NAMES = main.cpp picture.cpp tty.cpp

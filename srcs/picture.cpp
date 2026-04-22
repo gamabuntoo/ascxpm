@@ -6,14 +6,11 @@
 /*   By: gule-bat <gule-bat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 20:50:08 by gule-bat          #+#    #+#             */
-/*   Updated: 2026/04/17 18:47:28 by gule-bat         ###   ########.fr       */
+/*   Updated: 2026/04/22 02:10:56 by gule-bat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/asxpm.hpp"
-
-
-
 
 void	Picture::get_file(std::string name)
 {
@@ -184,7 +181,6 @@ void	Picture::get_ascii_buffer()
 	last = text; // could be usable later
 	// if (!write(1, text.c_str(), text.size()))
 		// return (perror("error write system call to display pic buffer"));
-	std::cout << text;
 }
 
 
@@ -215,6 +211,11 @@ void	Picture::get_ansii_colors()
 	colors_ansii = colo;
 }
 
+void	Picture::print_picture()
+{
+	std::cout << last;
+}
+
 Picture::Picture(std::string name, char **env): tty_i(tty_infos(env))
 {
 	infos[0]= 0;infos[1]= 0;infos[2]= 0;infos[3]= 0;
@@ -222,11 +223,15 @@ Picture::Picture(std::string name, char **env): tty_i(tty_infos(env))
 	get_info_image();/*			std::cout << "xpm info: " << "size - x " << xy_pic.x << " - y " << xy_pic.y << " colors nb: " << infos[2] << " char per px: " << infos[3] <<";\n";*/
 	get_ansii_colors();
 	get_ascii_buffer();
+	// delete [] bf_text;
+	// delete [] bf_pic;
+	// bf_text = NULL;
+	// bf_pic = NULL;
 }
 
 Picture::~Picture()
 {
-	if (bf_text)
+	if (bf_text != NULL)
 		delete [] bf_text;
 	if (colors)
 		delete [] colors;
@@ -234,4 +239,176 @@ Picture::~Picture()
 		delete [] colors_ansii;
 	if (bf_pic)
 		delete [] bf_pic;
+}
+
+//	//	//	//	//	//	//	//	VIDEO + CHECK FRAME DIRECTORY + VIDEO LOOP	//	//	//	//  //	//	//	//
+std::string Video::get_dir(std::string folder)
+{
+	DIR *FD;
+	struct dirent *infile;
+	std::string res;
+	int i = 0;
+
+	if (folder[folder.size()-1] != '/')
+		return (perror("error video folder input"), "");
+	FD = opendir(folder.c_str());
+	if (!FD)
+		return (perror("error while opening gif folder"), "");
+	while (((infile) = (readdir(FD))))
+	{
+		std::string bf = folder + "/" + infile->d_name;
+		struct stat buff;
+		int sta = -1;
+		sta = stat(bf.c_str(), &buff);
+		if (sta == -1)
+			return (perror("error while opening gif folder"), closedir(FD), "");
+		if (infile && buff.st_mode & S_IFREG )
+		{
+			res += bf;
+			res += '\n';
+			i++;
+		}
+	}
+	closedir(FD);
+//	//	//	//	//	//	//	//	//	//	//	//	//	//	//
+	std::string *f = new std::string[i+1];
+	if (!f)
+		return (perror("error while opening gif folder"), "");
+	std::stringstream s(res);
+	std::string l;
+	for (int p = 0; p <= i && std::getline(s, l); p++)
+		f[p] = l;
+	_files = f;
+	_frames = i;
+	return ("ok");
+}
+
+Video::Video(std::string folder, char **env) : _b_pos(0), _frames(0), _folder(folder)  
+{
+	_files = NULL;
+	if (get_dir(_folder) == "")
+		return ;
+	(void)env;
+	for (int x = 0; x < _frames - 1; x++)
+	{
+		for (int y = x + 1; y < _frames; y++)
+		{
+			if (_files[x] > _files[y])
+			{
+				std::string tmp = _files[x];
+				_files[x] = _files[y];
+				_files[y] = tmp;
+			}
+		}
+	}
+}
+
+Video::~Video()
+{
+	if (_files)
+		delete [] _files;
+}
+
+
+int	Video::print_video(char **env, int i, int l)
+{
+	if (!_frames)
+		return -1;
+	std::cout << "\033[1J";
+	for (int x = 0; x < _frames; x++)
+	{
+		if (x >= _frames - 1 && l == 1)
+			x = 0;
+		// std::cout << "\033[s";
+		std::cout << "\033[H";
+		Picture p(_files[x], env);
+		p.print_picture();
+		// std::cout << "\033[u";
+		usleep(30000);
+		if (i == 1)
+			break ;
+	}
+	return (1);
+}
+
+int			Video::print_video_by_frames(char **env, int i)
+{
+	static int x = 0;
+
+	if (!_frames)
+		return -1;
+	if (i == 1)
+		return (-1);
+	std::cout << "\033[1J";
+	if (x < _frames)
+	{
+
+		// std::cout << "\033[s";
+		std::cout << "\033[H";
+		Picture p(_files[x], env);
+		p.print_picture();
+		// std::cout << "\033[u";
+		usleep(30000);
+		x++;
+	}
+	if (x >= _frames - 1)
+		x = 0;
+	return (1);
+}
+
+Inputs::Inputs(std::string str, char **env) : _str(str), _env(env)
+{
+
+	
+}
+
+Inputs::~Inputs()
+{
+
+	
+}
+
+void	Inputs::start_image()
+{
+	Picture pic(_str, _env);
+
+	pic.print_picture();
+}
+
+void	Inputs::start_video_loop()
+{
+	std::string str;
+	Video v(_str, _env);
+	int i = 0;
+
+	while (1)
+	{
+		// if (!getline(std::cin, str))
+		// break;
+		// std::cout << "\033[1J";
+		std::cout << "p+enter to play video,\t f+enter to play frame by frame,\t q+enter to quit\n";
+		// std::cout << "\033[H";
+		std::cin >> str;
+		if (str == "p")
+			v.print_video(_env, i, 0);
+		else if ((str == "q") || !str.c_str())
+		{
+			i = 1;
+			break;
+		}
+		else if (str == "f")
+			v.print_video_by_frames(_env, i);
+		else if (str == "c")
+			std::cout << "\033[2J";
+	}
+
+
+	// !!!!!! SIGNAUX CTRL C MINITALK MINISHELL PTN QUEL CON 
+	return ;
+}
+
+void	Inputs::start_video()
+{
+	Video v(_str, _env);
+	v.print_video(_env, 0, 1);
 }
