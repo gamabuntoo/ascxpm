@@ -6,7 +6,7 @@
 /*   By: gule-bat <gule-bat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 20:50:08 by gule-bat          #+#    #+#             */
-/*   Updated: 2026/04/22 02:10:56 by gule-bat         ###   ########.fr       */
+/*   Updated: 2026/04/22 14:07:00 by gule-bat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void Picture::get_info_image()
 	std::stringstream s;
 	std::string *col;
 	
-	if (!bf_text || !infos)
+	if (!bf_text/* || !infos*/)
 		return (perror("text buffer error while parsing"));
 	/////// image size, color infos etc...
 	a = &bf_text[i][1];
@@ -283,7 +283,7 @@ std::string Video::get_dir(std::string folder)
 	return ("ok");
 }
 
-Video::Video(std::string folder, char **env) : _b_pos(0), _frames(0), _folder(folder)  
+Video::Video(std::string folder, char **env) : /*_b_pos(0),*/ _frames(0), _folder(folder)  
 {
 	_files = NULL;
 	if (get_dir(_folder) == "")

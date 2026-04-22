@@ -6,7 +6,7 @@
 /*   By: gule-bat <gule-bat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 20:47:16 by gule-bat          #+#    #+#             */
-/*   Updated: 2026/04/22 14:05:13 by gule-bat         ###   ########.fr       */
+/*   Updated: 2026/04/22 14:06:35 by gule-bat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ class	Picture
 class	Video
 {
 	private:
-		int		_b_pos;
+		// int		_b_pos;
 		int		_frames;
 		std::string	_folder;
 		std::string *_files;
@@ -95,7 +95,7 @@ class	Video
 class	Inputs
 {
 	private:
-		bool ok;
+		// bool ok;
 		std::string line;
 		std::string _str;
 		char **_env;
