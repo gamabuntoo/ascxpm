@@ -24,13 +24,20 @@ terminal directly instead of scaling the picture but idk atm.
 -	make clean // remove .o files
 -	make fclean// remove executable and .o files
 
+# Usage
 
-
+	i = interactive (p to play video, f to go to next frame, c to clear, q to quit)
+	p = pictue (displays picture into stdout)
+	v = plays video indefinitely (ctrl c to esc atm)
+	./Asxpm "-i"	folder_with_xpm_pics/	
+			"-p"	picture.xpm
+			"-v"	folder_with_xpm_pics/
 
 # Warnings
 
 	Some bugs might still be present I didnt tested every xpm possibilty but I've corrected some majors crashes rn.
 	If u find one contact me pls.
+	Render result might be weird if the picture is big and if the terminal y > x
 
 - Small tty size :
 ![image](https://github.com/user-attachments/assets/e5745e02-6cc6-4bb8-b33e-128cd07fa341)
