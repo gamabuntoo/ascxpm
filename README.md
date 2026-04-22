@@ -27,11 +27,13 @@ terminal directly instead of scaling the picture but idk atm.
 # Usage
 
 	i = interactive (p to play video, f to go to next frame, c to clear, q to quit)
-	p = pictue (displays picture into stdout)
+	p = picture (displays picture into stdout)
 	v = plays video indefinitely (ctrl c to esc atm)
 	./Asxpm "-i"	folder_with_xpm_pics/	
 			"-p"	picture.xpm
 			"-v"	folder_with_xpm_pics/
+
+	To play videos find a gif/video and extract/+export frames with image magick/ffmeg into xpm
 
 # Warnings
 
